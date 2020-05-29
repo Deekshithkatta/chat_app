@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import queryString from 'query-string';
-import io from "socket.io-client";
+import queryString from 'query-string'; //Retrieve data from url
+import io from "socket.io-client";      // React client 
 
 //import TextContainer from '../TextContainer/TextContainer';
-import Messages from '../Messages/Messages';
+import Messages from '../Messages/Messages'; 
 import InfoBar from '../InfoBar/InfoBar';
 import Input from '../Input/Input';
 
@@ -20,18 +20,17 @@ const Chat = ({ location }) => {
   const ENDPOINT = 'localhost:5000';
 
   useEffect(() => {
-    const { name, room } = queryString.parse(location.search);
-
-    socket = io(ENDPOINT);
-
-    setRoom(room);
+    const { name, room } = queryString.parse(location.search); // Returns data from url
+    socket = io(ENDPOINT); // URL endpoint 
+    setRoom(room);  
     setName(name)
 
-    socket.emit('join', { name, room }, (error) => {
+    socket.emit('join', { name, room }, (error) => { // Emmiting different events - > pass the payload -> call back
       if(error) {
         alert(error);
       }
     });
+
   }, [ENDPOINT, location.search]);
   
   useEffect(() => {
@@ -43,6 +42,7 @@ const Chat = ({ location }) => {
       setUsers(users);
     });
 }, []);
+
 
   const sendMessage = (event) => {
     event.preventDefault();
