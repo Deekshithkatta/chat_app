@@ -17,4 +17,4 @@ const Input = ({ setMessage, sendMessage, message }) => (
   </form>
 )
 
-export default Input;
+export default Input; 

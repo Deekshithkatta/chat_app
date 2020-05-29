@@ -25,14 +25,20 @@ const Chat = ({ location }) => {
     setRoom(room);  
     setName(name)
 
-    socket.emit('join', { name, room }, (error) => { // Emmiting different events - > pass the payload -> call back
+    socket.emit('join', { name, room }, (error) => { // Emmiting different join event - > pass the payload -> call back
       if(error) {
         alert(error);
       }
     });
 
+    return ()=>{
+      socket.emit('disconnet')
+      socket.off()
+    }
+
   }, [ENDPOINT, location.search]);
   
+
   useEffect(() => {
     socket.on('message', message => {
       setMessages(messages => [ ...messages, message ]);
@@ -41,12 +47,12 @@ const Chat = ({ location }) => {
     socket.on("roomData", ({ users }) => {
       setUsers(users);
     });
-}, []);
+},[]);
 
+ 
 
   const sendMessage = (event) => {
-    event.preventDefault();
-
+    event.preventDefault(); // Prevents refresh of the page
     if(message) {
       socket.emit('sendMessage', message, () => setMessage(''));
     }
